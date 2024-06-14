@@ -2,3 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+.file-input {
+    display: none;
+}
+
+/* Style the custom file input label */
+.file-label {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: center;
+  }
+  
+  .file-label:hover {
+    background-color: #45a049;
+  }
+

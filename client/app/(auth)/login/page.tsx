@@ -59,7 +59,7 @@ export default function Login() {
             <button className=' bg-blue-300 px-4 py-3 rounded-lg transition-all delay-75  hover:bg-green-500'>Login</button>
           </div>
           <div>
-            Already have an account? <Link href='/register'><span className=' text-blue-300 underline'>Register</span></Link>
+            <span>Don&apos;t have an account?</span> <Link href='/register'><span className=' text-blue-300 underline'>Register</span></Link>
           </div>
         </div>
     </div>

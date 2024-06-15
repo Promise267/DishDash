@@ -1,6 +1,31 @@
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
 
-class User(models.Model):
+class CustomUserManager(BaseUserManager):
+    def create_user(self, email, username, password=None):
+        if not email:
+            raise ValueError('Users must have an email address')
+
+        user = self.model(
+            email=self.normalize_email(email),
+            username=username,
+        )
+
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email, username, password):
+        user = self.create_user(
+            email=email,
+            username=username,
+            password=password,
+        )
+        user.is_admin = True
+        user.save(using=self._db)
+        return user
+
+class User(AbstractBaseUser):
     user_id = models.AutoField(primary_key=True)
     username = models.CharField(max_length=255, null=False, unique=True)
     email = models.CharField(max_length=255, null=False, unique=True)
@@ -8,6 +33,16 @@ class User(models.Model):
     password = models.CharField(max_length=255, null=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    last_login = models.DateTimeField(auto_now=True)
+
+    objects = CustomUserManager()
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']
+
+    def __str__(self):
+        return self.email
 
 class Recipe(models.Model):
     recipe_id = models.AutoField(primary_key=True)

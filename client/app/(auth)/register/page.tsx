@@ -1,14 +1,20 @@
 'use client'
-import React, { ChangeEvent, FormEvent, useState, useRef } from 'react'
+import React, { ChangeEvent, FormEvent, useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import axios from 'axios'
 import { toast, ToastContainer } from 'react-toastify'
 import { faTrash, faUpload } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 
 
 export default function Register() {
+  
+  const router = useRouter()
+  const [file, setFile] = useState<File | undefined>(undefined)
+  const [fileUrl, setFileUrl] = useState<string | undefined>(undefined)
+
   const [creds, setCreds] = useState({
     username : "",
     email : "",
@@ -25,10 +31,6 @@ export default function Register() {
       }
     }) 
   }
-
-  const [file, setFile] = useState<File | undefined>(undefined)
-  const [fileUrl, setFileUrl] = useState<string | undefined>(undefined)
-
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const uploadedFile = e.target.files?.[0]
@@ -81,8 +83,9 @@ export default function Register() {
         if (response.status === 409) {
           toast.error(response.data.message);
         } else {
-          toast.success(response.data.message)
-          
+          toast.success(response.data.message);
+          router.push("/login")
+          //router.push("/login")
         }
       } catch (error) {
         if (axios.isAxiosError(error) && error.response) {

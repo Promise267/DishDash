@@ -2,7 +2,8 @@
 import React, { ChangeEvent, FormEvent, useState, useRef } from 'react'
 import Link from 'next/link'
 import axios from 'axios'
-import { faImage, faTrash, faUpload } from '@fortawesome/free-solid-svg-icons'
+import { toast, ToastContainer } from 'react-toastify'
+import { faTrash, faUpload } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image'
 
@@ -59,17 +60,57 @@ export default function Register() {
     setFileUrl(undefined)
   }
 
-  const handleRegister = async(e: FormEvent) => {
+
+  const handleRegister = async (e: FormEvent) => {
     e.preventDefault();
-    if(creds.email != "" && creds.password != "" && creds.username != "" && file != undefined){
-      console.log(file);
-      
+    if (creds.email !== "" && creds.password !== "" && creds.username !== "" && file !== undefined) {
+      try {
+        const response = await axios.post("http://localhost:5000/user/addUser/", {
+          username: creds.username,
+          email: creds.email,
+          password: creds.password,
+          profile_picture: file,
+        },
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+      );
+  
+        if (response.status === 409) {
+          toast.error(response.data.message);
+        } else {
+          toast.success(response.data.message)
+          
+        }
+      } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+          toast.error(error.response.data.message || "An error occurred");
+        } else {
+          toast.error("An unexpected error occurred");
+        }
+      }
+    } else {
+      toast.warn("Enter the credentials");
     }
-  }
+  };
 
 
   return (
     <>
+    <ToastContainer
+      position="bottom-right"
+      autoClose={5000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="light"
+    />
       <div className='mx-auto'>
         <form onSubmit={handleRegister}>
           <div className='flex flex-col justify-center items-center h-screen space-y-4'>

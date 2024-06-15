@@ -4,7 +4,7 @@ class User(models.Model):
     user_id = models.AutoField(primary_key=True)
     username = models.CharField(max_length=255, null=False, unique=True)
     email = models.CharField(max_length=255, null=False, unique=True)
-    profile_picture = models.CharField(max_length=255, null=False)
+    profile_picture = models.ImageField(upload_to='profile_pictures/')
     password = models.CharField(max_length=255, null=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

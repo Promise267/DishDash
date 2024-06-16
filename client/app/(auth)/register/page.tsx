@@ -67,7 +67,7 @@ export default function Register() {
     e.preventDefault();
     if (creds.email !== "" && creds.password !== "" && creds.username !== "" && file !== undefined) {
       try {
-        const response = await axios.post("http://localhost:5000/user/addUser/", {
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_FRONTEND_URI}/user/addUser/`, {
           username: creds.username,
           email: creds.email,
           password: creds.password,

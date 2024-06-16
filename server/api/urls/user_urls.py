@@ -7,7 +7,8 @@ urlpatterns = [
     path('getUser/', user_views.getUsers),
     path('addUser/', user_views.addUser),
     path('findUser/', user_views.findUser),
-    path('authUser/', user_views.authUser)
+    path('authUser/', user_views.authUser),
+    path('validateUser/', user_views.validateUser)
 ]
 
 if settings.DEBUG:
